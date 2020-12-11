@@ -15,9 +15,7 @@ import java.io.Serializable;
 import java.lang.reflect.Field;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
-import java.util.Collection;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * Created by Administrator on 2019/11/13 0013.
@@ -282,8 +280,9 @@ public class MyBatisJapService<D extends BaseMapper<T>, T extends PageInfoHelp> 
             classType = (Class<T>) type;
         }
         Field[] fields = classType.getDeclaredFields();
+        Set<Field>  fieldSet=sortField(fields);
         int a=1;
-        for (Field field : fields) {
+        for (Field field : fieldSet) {
             String name= SqlUtils.firstCapitalization(field.getName());
             if(method.indexOf(name)==-1){
                 continue;
@@ -294,5 +293,21 @@ public class MyBatisJapService<D extends BaseMapper<T>, T extends PageInfoHelp> 
             attributes.put(attribut,name);
         }
         return method;
+    }
+
+    private Set<Field> sortField(Field[] fields) {
+        // TODO Auto-generated method stub
+        Set<Field> set = new TreeSet<>(new Comparator<Field>() {
+            @Override
+            public int compare(Field f1, Field f2) {
+                // TODO Auto-generated method stub
+                if (f1.getName().length() > f2.getName().length())
+                    return -1;
+                else if (f1.getName().length() < f2.getName().length())
+                    return 1;
+                return f1.getName().compareTo(f2.getName());
+            }
+        });
+        return set;
     }
 }
