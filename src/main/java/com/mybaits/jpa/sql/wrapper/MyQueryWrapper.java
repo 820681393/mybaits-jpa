@@ -45,8 +45,8 @@ public class MyQueryWrapper<T> extends QueryWrapper<T>{
 
     private MyQueryWrapper(T entity, Class<T> entityClass, AtomicInteger paramNameSeq, Map<String, Object> paramNameValuePairs, MergeSegments mergeSegments, SharedString lastSql, SharedString sqlComment) {
         this.sqlSelect = new SharedString();
-        super.setEntity(entity);
-        this.entityClass = entityClass;
+        this.setEntity(entity);
+        this.setEntityClass(entityClass);
         this.paramNameSeq = paramNameSeq;
         this.paramNameValuePairs = paramNameValuePairs;
         this.expression = mergeSegments;
@@ -59,7 +59,7 @@ public class MyQueryWrapper<T> extends QueryWrapper<T>{
         this.sqlSelect = new SharedString();
         super.setEntity(myQueryWrapper.getEntity());
         if(myQueryWrapper.getEntity()!=null){
-            this.entityClass = (Class<T>) myQueryWrapper.getEntity().getClass();
+            this.setEntityClass((Class<T>) myQueryWrapper.getEntity().getClass()) ;
         }
         this.paramNameSeq = myQueryWrapper.paramNameSeq;
         this.paramNameValuePairs = myQueryWrapper.getParamNameValuePairs();
@@ -73,7 +73,7 @@ public class MyQueryWrapper<T> extends QueryWrapper<T>{
         this.sqlSelect = new SharedString();
         super.setEntity(myQueryWrapper2.getEntity());
         if(myQueryWrapper1.getEntity()!=null){
-            this.entityClass = (Class<T>) myQueryWrapper2.getEntity().getClass();
+            this.setEntityClass((Class<T>) myQueryWrapper2.getEntity().getClass());
         }
         this.paramNameSeq = myQueryWrapper2.paramNameSeq;
         Set<String> sortSet = new TreeSet<String>((o1, o2) -> o1.compareTo(o2));
@@ -107,12 +107,12 @@ public class MyQueryWrapper<T> extends QueryWrapper<T>{
     }
 
     public MyQueryWrapper<T> select(Predicate<TableFieldInfo> predicate) {
-        return this.select(this.entityClass, predicate);
+        return this.select(this.getEntityClass(), predicate);
     }
 
     public MyQueryWrapper<T> select(Class<T> entityClass, Predicate<TableFieldInfo> predicate) {
-        this.entityClass = entityClass;
-        this.sqlSelect.setStringValue(TableInfoHelper.getTableInfo(this.getCheckEntityClass()).chooseSelect(predicate));
+        this.setEntityClass(entityClass);
+        this.sqlSelect.setStringValue(TableInfoHelper.getTableInfo(this.getEntityClass()).chooseSelect(predicate));
         return (MyQueryWrapper)this.typedThis;
     }
 
@@ -125,7 +125,7 @@ public class MyQueryWrapper<T> extends QueryWrapper<T>{
     }
 
     public MyQueryWrapper<T> instance() {
-        return new MyQueryWrapper(this.entity, this.entityClass, this.paramNameSeq, this.paramNameValuePairs, this.expression, SharedString.emptyString(), SharedString.emptyString());
+        return new MyQueryWrapper(this.getEntity(), this.getEntityClass(), this.paramNameSeq, this.paramNameValuePairs, this.expression, SharedString.emptyString(), SharedString.emptyString());
     }
 
 

@@ -65,12 +65,24 @@ public class JpaQueryWrapper<T> {
                     }else if(QueryType.LE.getValue().equals(pageQuery.queryType().getValue())){
                         queryWrapper.le(SqlUtils.HumpToUnderline(name),resultValue);
                     }else if(QueryType.LIKE.getValue().equals(pageQuery.queryType().getValue())){
+                        if("".equals(resultValue)){
+                            continue;
+                        }
                         queryWrapper.like(SqlUtils.HumpToUnderline(name),resultValue);
                     }else if(QueryType.NOTLIKE.getValue().equals(pageQuery.queryType().getValue())){
+                        if("".equals(resultValue)){
+                            continue;
+                        }
                         queryWrapper.notLike(SqlUtils.HumpToUnderline(name),resultValue);
                     }else if(QueryType.LIKELEFT.getValue().equals(pageQuery.queryType().getValue())){
+                        if("".equals(resultValue)){
+                            continue;
+                        }
                         queryWrapper.likeLeft(SqlUtils.HumpToUnderline(name),resultValue);
                     }else if(QueryType.LIKERIGHT.getValue().equals(pageQuery.queryType().getValue())){
+                        if("".equals(resultValue)){
+                            continue;
+                        }
                         queryWrapper.likeRight(SqlUtils.HumpToUnderline(name),resultValue);
                     }
                     continue;
@@ -82,7 +94,9 @@ public class JpaQueryWrapper<T> {
                     if(tableField!=null){
                         if(tableField.exist()){
                             if(resultValue instanceof String){
-                                queryWrapper.like(SqlUtils.HumpToUnderline(name),resultValue);
+                                if(!"".equals(resultValue)){
+                                    queryWrapper.like(SqlUtils.HumpToUnderline(name),resultValue);
+                                }
                             }else {
                                 queryWrapper.eq(SqlUtils.HumpToUnderline(name),resultValue);
                             }
@@ -90,7 +104,9 @@ public class JpaQueryWrapper<T> {
                         }
                     }else{
                         if(resultValue instanceof String){
-                            queryWrapper.like(SqlUtils.HumpToUnderline(name),resultValue);
+                            if(!"".equals(resultValue)){
+                                queryWrapper.like(SqlUtils.HumpToUnderline(name),resultValue);
+                            }
                         }else {
                             queryWrapper.eq(SqlUtils.HumpToUnderline(name),resultValue);
                         }
@@ -157,12 +173,24 @@ public class JpaQueryWrapper<T> {
                     }else if(QueryType.LE.getValue().equals(pageQuery.queryType().getValue())){
                         queryWrapper.le(SqlUtils.HumpToUnderline(name),resultValue);
                     }else if(QueryType.LIKE.getValue().equals(pageQuery.queryType().getValue())){
+                        if("".equals(resultValue)){
+                            continue;
+                        }
                         queryWrapper.like(SqlUtils.HumpToUnderline(name),resultValue);
                     }else if(QueryType.NOTLIKE.getValue().equals(pageQuery.queryType().getValue())){
+                        if("".equals(resultValue)){
+                            continue;
+                        }
                         queryWrapper.notLike(SqlUtils.HumpToUnderline(name),resultValue);
                     }else if(QueryType.LIKELEFT.getValue().equals(pageQuery.queryType().getValue())){
+                        if("".equals(resultValue)){
+                            continue;
+                        }
                         queryWrapper.likeLeft(SqlUtils.HumpToUnderline(name),resultValue);
                     }else if(QueryType.LIKERIGHT.getValue().equals(pageQuery.queryType().getValue())){
+                        if("".equals(resultValue)){
+                            continue;
+                        }
                         queryWrapper.likeRight(SqlUtils.HumpToUnderline(name),resultValue);
                     }
                     continue;
@@ -182,7 +210,9 @@ public class JpaQueryWrapper<T> {
                         }
                     }else{
                         if(resultValue instanceof String){
-                            queryWrapper.like(SqlUtils.HumpToUnderline(name),resultValue);
+                            if(!"".equals(resultValue)){
+                                queryWrapper.like(SqlUtils.HumpToUnderline(name),resultValue);
+                            }
                         }else {
                             queryWrapper.eq(SqlUtils.HumpToUnderline(name),resultValue);
                         }
@@ -312,10 +342,16 @@ public class JpaQueryWrapper<T> {
             queryWrapper.eq(SqlUtils.HumpToUnderline(key),param);
         }else if(KeyWord.NotLike.getValue().equals(keyWord2)){
             SqlUtils.checkParam(key, KeyWord.NotLike.getValue(),param);
-            queryWrapper.notLike(SqlUtils.HumpToUnderline(key),param);
+            if(!"".equals(param)){
+                queryWrapper.notLike(SqlUtils.HumpToUnderline(key),param);
+            }
+
         }else if(KeyWord.Like.getValue().equals(keyWord2)){
             SqlUtils.checkParam(key, KeyWord.Like.getValue(),param);
-            queryWrapper.like(SqlUtils.HumpToUnderline(key),param);
+            if(!"".equals(param)){
+                queryWrapper.like(SqlUtils.HumpToUnderline(key),param);
+            }
+
         }else if(KeyWord.After.getValue().equals(keyWord2)){
             SqlUtils.checkParam(key, KeyWord.After.getValue(),param);
             queryWrapper.gt(SqlUtils.HumpToUnderline(key),param);

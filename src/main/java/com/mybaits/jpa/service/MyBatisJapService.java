@@ -2,16 +2,15 @@ package com.mybaits.jpa.service;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.github.pagehelper.PageHelper;
-import com.github.pagehelper.PageInfo;
 import com.mybaits.jpa.jpaEnum.KeyWord;
 import com.mybaits.jpa.sql.wrapper.JpaQueryWrapper;
 import com.mybaits.jpa.util.PageInfoHelp;
 import com.mybaits.jpa.util.SqlUtils;
 import org.apache.commons.collections.map.HashedMap;
 
-import java.io.Serializable;
 import java.lang.reflect.Field;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
@@ -29,30 +28,23 @@ public class MyBatisJapService<D extends BaseMapper<T>, T extends PageInfoHelp> 
      * @param t 泛型分页对象
      * @return
      */
-    public PageInfo<T> jpaPageInfo(T t){
-        StackTraceElement[] stackTrace = new Exception().getStackTrace();
+    public IPage<T> jpaPageInfo(T t){
         PageInfoHelp.setDefault(t);
-        PageHelper.startPage(t.getPageNum(), t.getPageSize());
+        Page<T> page = new Page<>(t.getPageNum(), t.getPageSize());
         QueryWrapper<T> queryWrapper=jpaQueryWrapper.getPageInfoQueryWrapper(t);
-        List<T> infos = baseMapper.selectList(queryWrapper);
-        LinkTableSelect<T> linkTableSelect=new LinkTableSelect<T>();
-        linkTableSelect.linkSelect(stackTrace[1],infos);
-        return new PageInfo<T>(infos);
+        return this.page(page,queryWrapper);
     }
     /**
      * 查询分页
      * @param t 泛型分页对象
      * @return
      */
-    public PageInfo<T> jpaPageInfo(T t, QueryWrapper<T> queryWrapper){
+    public IPage<T> jpaPageInfo(T t, QueryWrapper<T> queryWrapper){
         StackTraceElement[] stackTrace = new Exception().getStackTrace();
         PageInfoHelp.setDefault(t);
-        PageHelper.startPage(t.getPageNum(), t.getPageSize());
+        Page<T> page = new Page<>(t.getPageNum(), t.getPageSize());
         queryWrapper=jpaQueryWrapper.getPageInfoQueryWrapper(t,queryWrapper);
-        List<T> infos = baseMapper.selectList(queryWrapper);
-        LinkTableSelect<T> linkTableSelect=new LinkTableSelect<T>();
-        linkTableSelect.linkSelect(stackTrace[1],infos);
-        return new PageInfo<T>(infos);
+        return this.page(page,queryWrapper);
     }
 
 
@@ -61,7 +53,7 @@ public class MyBatisJapService<D extends BaseMapper<T>, T extends PageInfoHelp> 
      * @param params 查询参数
      * @return
      */
-    public int jpaCount(Object...params){
+    public long jpaCount(Object...params){
         StackTraceElement[] stackTrace = new Exception().getStackTrace();
         String methodName = stackTrace[1].getMethodName();
         methodName=methodName.replace(KeyWord.countBy.getValue(), KeyWord.And.getValue());
@@ -69,7 +61,7 @@ public class MyBatisJapService<D extends BaseMapper<T>, T extends PageInfoHelp> 
         methodName=setMethodAttribute(methodName,attributes);
         List<String> keyWords= SqlUtils.getKeyword(methodName);
         QueryWrapper<T> queryWrapper=jpaQueryWrapper.getQueryWrapper(keyWords,attributes,params);
-        int  count=baseMapper.selectCount(queryWrapper);
+        long  count=baseMapper.selectCount(queryWrapper);
         return count;
     }
 
@@ -78,7 +70,7 @@ public class MyBatisJapService<D extends BaseMapper<T>, T extends PageInfoHelp> 
      * @param params 查询参数
      * @return
      */
-    public int jpaCount(QueryWrapper<T> queryWrapper,Object...params){
+    public long jpaCount(QueryWrapper<T> queryWrapper,Object...params){
         StackTraceElement[] stackTrace = new Exception().getStackTrace();
         String methodName = stackTrace[1].getMethodName();
         methodName=methodName.replace(KeyWord.countBy.getValue(), KeyWord.And.getValue());
@@ -86,7 +78,7 @@ public class MyBatisJapService<D extends BaseMapper<T>, T extends PageInfoHelp> 
         methodName=setMethodAttribute(methodName,attributes);
         List<String> keyWords=SqlUtils.getKeyword(methodName);
         queryWrapper=jpaQueryWrapper.getQueryWrapper(queryWrapper,keyWords,attributes,params);
-        int  count=baseMapper.selectCount(queryWrapper);
+        long  count=baseMapper.selectCount(queryWrapper);
         return count;
     }
 
@@ -248,13 +240,6 @@ public class MyBatisJapService<D extends BaseMapper<T>, T extends PageInfoHelp> 
         return true;
     }
 
-    @Override
-    public boolean removeByIds(Collection<? extends Serializable> idList) {
-        if(idList!=null&&idList.size()>0){
-            return super.removeByIds(idList);
-        }
-        return true;
-    }
 
     @Override
     public boolean removeByMap(Map<String, Object> columnMap) {
@@ -308,6 +293,7 @@ public class MyBatisJapService<D extends BaseMapper<T>, T extends PageInfoHelp> 
                 return f1.getName().compareTo(f2.getName());
             }
         });
+        Collections.addAll(set, fields);
         return set;
     }
 }

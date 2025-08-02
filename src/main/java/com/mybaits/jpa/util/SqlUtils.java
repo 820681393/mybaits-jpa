@@ -20,7 +20,7 @@ public class SqlUtils {
      */
     public static String firstCapitalization(String info){
         StringBuffer sb=new StringBuffer(info);
-        if(info!=null&&info!=""&&info.length()>0){
+        if(sb!=null&&sb.length()>0&&!sb.toString().equals("")){
             String charInfo=sb.substring(0,1);
             sb.replace(0,1,charInfo.toUpperCase());
             return sb.toString();
