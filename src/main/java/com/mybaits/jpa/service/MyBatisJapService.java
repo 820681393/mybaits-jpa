@@ -9,7 +9,7 @@ import com.mybaits.jpa.jpaEnum.KeyWord;
 import com.mybaits.jpa.sql.wrapper.JpaQueryWrapper;
 import com.mybaits.jpa.util.PageInfoHelp;
 import com.mybaits.jpa.util.SqlUtils;
-import org.apache.commons.collections.map.HashedMap;
+import org.apache.commons.collections4.map.HashedMap;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.ParameterizedType;

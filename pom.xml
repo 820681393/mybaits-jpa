@@ -7,7 +7,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>com.github.yanzongpro</groupId>
     <artifactId>mybatis-jpa</artifactId>
-    <version>3.0.3</version>
+    <version>3.0.5</version>
     <packaging>jar</packaging>
 
 
@@ -31,15 +31,16 @@
             <version>3.5.12</version>
         </dependency>
         <dependency>
-            <groupId>commons-collections</groupId>
-            <artifactId>commons-collections</artifactId>
-            <version>3.2.2</version>
+            <groupId>org.apache.commons</groupId>
+            <artifactId>commons-collections4</artifactId>
+            <version>4.4</version> <!-- 最新稳定版，兼容3.x API -->
         </dependency>
         <dependency>
             <groupId>org.springframework.data</groupId>
             <artifactId>spring-data-commons</artifactId>
-            <version>2.3.2.RELEASE</version>
+            <version>3.2.8</version> <!-- 与Spring 6.2.x兼容的最新稳定版 -->
             <exclusions>
+                <!-- 若新版本仍有冲突，可保留排除项，否则移除 -->
                 <exclusion>
                     <artifactId>spring-beans</artifactId>
                     <groupId>org.springframework</groupId>
@@ -86,7 +87,7 @@
                     <plugin>
                         <groupId>org.apache.maven.plugins</groupId>
                         <artifactId>maven-source-plugin</artifactId>
-                        <version>2.2.1</version>
+                        <version>3.2.1</version> <!-- 最新稳定版 -->
                         <executions>
                             <execution>
                                 <id>attach-sources</id>
@@ -100,14 +101,15 @@
                     <plugin>
                         <groupId>org.apache.maven.plugins</groupId>
                         <artifactId>maven-javadoc-plugin</artifactId>
-                        <version>2.9.1</version>
+                        <version>3.6.3</version> <!-- 支持Java 17的版本 -->
                         <configuration>
                             <show>private</show>
                             <nohelp>true</nohelp>
                             <charset>UTF-8</charset>
                             <encoding>UTF-8</encoding>
                             <docencoding>UTF-8</docencoding>
-                            <additionalparam>-Xdoclint:none</additionalparam>  <!-- TODO 临时解决不规范的javadoc生成报错,后面要规范化后把这行去掉 -->
+                            <!-- 建议移除临时参数，规范Javadoc注释后删除此行 -->
+                            <!-- <additionalparam>-Xdoclint:none</additionalparam> -->
                         </configuration>
                         <executions>
                             <execution>
@@ -121,7 +123,7 @@
                     <plugin>
                         <groupId>org.apache.maven.plugins</groupId>
                         <artifactId>maven-gpg-plugin</artifactId>
-                        <version>1.5</version>
+                        <version>3.1.0</version> <!-- 最新稳定版 -->
                         <executions>
                             <execution>
                                 <id>sign-artifacts</id>
@@ -135,16 +137,17 @@
                     <plugin>
                         <groupId>org.apache.maven.plugins</groupId>
                         <artifactId>maven-compiler-plugin</artifactId>
-                        <version>3.2</version>
+                        <version>3.12.1</version> <!-- 支持Java 17的版本 -->
                         <configuration>
-                            <source>17</source> <!-- 源码编译版本 -->
-                            <target>17</target> <!-- 目标字节码版本 -->
+                            <source>${maven.compiler.source}</source> <!-- 复用properties中的配置 -->
+                            <target>${maven.compiler.target}</target>
+                            <encoding>UTF-8</encoding> <!-- 新增编码配置 -->
                         </configuration>
                     </plugin>
                     <plugin>
                         <groupId>org.apache.maven.plugins</groupId>
                         <artifactId>maven-release-plugin</artifactId>
-                        <version>2.5.1</version>
+                        <version>3.0.1</version> <!-- 最新稳定版 -->
                     </plugin>
                 </plugins>
             </build>
@@ -155,17 +158,19 @@
     <properties>
         <maven.compiler.source>17</maven.compiler.source>
         <maven.compiler.target>17</maven.compiler.target>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding> <!-- 新增 -->
+        <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding> <!-- 新增 -->
     </properties>
 
     <distributionManagement>
-        <repository>
-            <id>mybatisjpa-snapshots</id>
-            <name>Sonatype Nexus Snapshots</name>
+        <repository> <!-- 发布版本仓库 -->
+            <id>mybatisjpa-releases</id> <!-- 修正ID为release相关 -->
+            <name>Sonatype Nexus Releases</name>
             <url>https://oss.sonatype.org/service/local/staging/deploy/maven2</url>
         </repository>
-        <snapshotRepository>
-            <id>mybatisjpa-releases</id>
-            <name>Nexus Release Repository</name>
+        <snapshotRepository> <!-- 快照版本仓库 -->
+            <id>mybatisjpa-snapshots</id> <!-- 修正ID为snapshot相关 -->
+            <name>Sonatype Nexus Snapshots</name>
             <url>https://oss.sonatype.org/content/repositories/snapshots</url>
         </snapshotRepository>
     </distributionManagement>

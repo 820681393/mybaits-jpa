@@ -7,7 +7,7 @@ import com.mybaits.jpa.jpaEnum.KeyWord;
 import com.mybaits.jpa.jpaEnum.QueryOrderType;
 import com.mybaits.jpa.jpaEnum.QueryType;
 import com.mybaits.jpa.util.SqlUtils;
-import org.apache.commons.collections.map.HashedMap;
+import org.apache.commons.collections4.map.HashedMap;
 
 import java.lang.reflect.Field;
 import java.util.ArrayList;
