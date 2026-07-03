@@ -4,13 +4,22 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 
 
+
+
+
     <modelVersion>4.0.0</modelVersion>
-    <groupId>com.github.yanzongpro</groupId>
+    <groupId>com.mybatis.jpa</groupId>
     <artifactId>mybatis-jpa</artifactId>
-    <version>3.0.5</version>
+    <version>3.0.7</version>
     <packaging>jar</packaging>
 
-
+    <properties>
+        <java.version>21</java.version>
+        <maven.compiler.source>21</maven.compiler.source>
+        <maven.compiler.target>21</maven.compiler.target>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding> <!-- 新增 -->
+        <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding> <!-- 新增 -->
+    </properties>
 
     <dependencies>
         <dependency>
@@ -155,12 +164,6 @@
         </profile>
     </profiles>
 
-    <properties>
-        <maven.compiler.source>17</maven.compiler.source>
-        <maven.compiler.target>17</maven.compiler.target>
-        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding> <!-- 新增 -->
-        <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding> <!-- 新增 -->
-    </properties>
 
     <distributionManagement>
         <repository> <!-- 发布版本仓库 -->

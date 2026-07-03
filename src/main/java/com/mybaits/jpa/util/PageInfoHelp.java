@@ -8,7 +8,7 @@ import java.io.Serializable;
  */
 public class PageInfoHelp implements Serializable {
     public static final int DEFAULT_PAGE_SIZE = 15;
-    public static final int MAX_PAGE_SIZE = 200;
+    public static final int MAX_PAGE_SIZE = 20000;
     public static final int FIRST_PAGE = 1;
 
     @TableField(exist = false)
